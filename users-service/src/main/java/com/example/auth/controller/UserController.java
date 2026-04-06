@@ -1,7 +1,8 @@
 package com.example.auth.controller;
 
+import com.example.auth.dto.UserDto;
 import com.example.auth.entities.User;
-import com.example.auth.service.UserService;
+import com.example.auth.service.serviceImpl.UserService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -30,9 +31,7 @@ public class UserController {
     }
 
     @GetMapping("")
-    public ResponseEntity<List<User>> allUsers() {
-        List <User> users = userService.allUsers();
-
-        return ResponseEntity.ok(users);
+    public ResponseEntity<List<UserDto>> getAllUser() {
+       return ResponseEntity.ok(userService.getAllUser());
     }
 }

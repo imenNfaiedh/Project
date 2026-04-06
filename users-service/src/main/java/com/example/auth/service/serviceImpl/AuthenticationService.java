@@ -1,4 +1,4 @@
-package com.example.auth.service;
+package com.example.auth.service.serviceImpl;
 
 import com.example.auth.Repository.IUserRepository;
 import com.example.auth.dto.LoginUserDto;
