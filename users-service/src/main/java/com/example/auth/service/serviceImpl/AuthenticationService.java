@@ -4,6 +4,7 @@ import com.example.auth.Repository.IUserRepository;
 import com.example.auth.dto.LoginUserDto;
 import com.example.auth.dto.RegisterUserDto;
 import com.example.auth.entities.User;
+import com.example.auth.service.IAuthenticationService;
 import lombok.Data;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -12,7 +13,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 @Data
-public class AuthenticationService {
+public class AuthenticationService implements IAuthenticationService {
     private final IUserRepository userRepository;
 
     private final PasswordEncoder passwordEncoder;
@@ -29,24 +30,24 @@ public class AuthenticationService {
         this.passwordEncoder = passwordEncoder;
     }
 
-    public User signup(RegisterUserDto input) {
+    public User signup(RegisterUserDto registerUserDto) {
         User user = new User()
-                .setFullName(input.getFullName())
-                .setEmail(input.getEmail())
-                .setPassword(passwordEncoder.encode(input.getPassword()));
+                .setFullName(registerUserDto.getFullName())
+                .setEmail(registerUserDto.getEmail())
+                .setPassword(passwordEncoder.encode(registerUserDto.getPassword()));
 
         return userRepository.save(user);
     }
 
-    public User authenticate(LoginUserDto input) {
+    public User authenticate(LoginUserDto loginUserDto) {
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
-                        input.getEmail(),
-                        input.getPassword()
+                        loginUserDto.getEmail(),
+                        loginUserDto.getPassword()
                 )
         );
 
-        return userRepository.findByEmail(input.getEmail())
+        return userRepository.findByEmail(loginUserDto.getEmail())
                 .orElseThrow();
     }
 
